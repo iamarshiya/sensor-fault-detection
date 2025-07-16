@@ -1,0 +1,40 @@
+# Virtual environment
+venv/
+.env/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.so
+
+# Jupyter and Streamlit temporary files
+.ipynb_checkpoints
+.streamlit/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment variables or secret keys
+.env
+*.env
+
+# VSCode
+.vscode/
+
+# Output files
+*.csv
+*.h5
+*.log
+*.sqlite
+*.db
+*.pkl
+
+# TensorFlow logs
+logs/
+
+# Pytest cache
+.pytest_cache/
+
+# Model checkpoints
+checkpoints/
