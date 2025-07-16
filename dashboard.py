@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import IsolationForest
 import matplotlib.pyplot as plt
+st.set_page_config(page_title="Sensor Fault Detection", layout="wide")
 
 st.title("🔍 Sensor Fault Detection Dashboard")
 st.markdown("Detect sensor anomalies using **Isolation Forest**")
@@ -29,3 +30,10 @@ if uploaded_file:
     ax.scatter(anomalies["time"], anomalies["sensor"], color="red", label="Anomaly")
     ax.legend()
     st.pyplot(fig)
+
+with st.sidebar:
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/McLaren.svg/1200px-McLaren.svg.png", width=150)
+    st.title("🔧 Options")
+    model_option = st.radio("Select Model:", ["Isolation Forest", "LSTM Autoencoder"])
+    st.markdown("---")
+    st.markdown("Built by **Arshiya**")
