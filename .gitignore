@@ -38,3 +38,4 @@ logs/
 
 # Model checkpoints
 checkpoints/
+data/telemetry_cache/

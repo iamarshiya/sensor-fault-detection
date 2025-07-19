@@ -1,66 +1,48 @@
-# dashboard.py
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.ensemble import IsolationForest
 import numpy as np
-from lstm_autoencoder import detect_anomalies_lstm
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+from keras.models import Sequential
+from keras.layers import LSTM, RepeatVector, TimeDistributed, Dense
+import tensorflow as tf
 
-st.set_page_config(page_title="Sensor Fault Detection Dashboard", layout="wide")
+def detect_anomalies_lstm(input_df):
+    df = input_df.copy()
+    
+    # Normalize sensor data
+    scaler = MinMaxScaler()
+    df['sensor_scaled'] = scaler.fit_transform(df[['sensor']])
 
-st.title("📊 Sensor Fault Detection Dashboard")
+    # Create sequences
+    def create_sequences(data, window_size):
+        return np.array([data[i:i+window_size] for i in range(len(data) - window_size)])
 
-# Sidebar with visual section
-def sidebar_options():
-    with st.sidebar:
-        st.title("🔧 Options")
-        model = st.radio("Select Anomaly Detection Model:", ("Isolation Forest", "LSTM Autoencoder"))
-        st.markdown("---")
-        st.markdown("Created by Arshiya")
-    return model
+    window_size = 30
+    sequences = create_sequences(df['sensor_scaled'].values, window_size)
+    sequences = sequences.reshape((sequences.shape[0], window_size, 1))
 
-model_option = sidebar_options()
+    train_size = int(0.6 * sequences.shape[0])
+    X_train = sequences[:train_size]
+    X_test = sequences
 
-# Load or simulate sensor data
-def load_sensor_data():
-    np.random.seed(42)
-    time = np.arange(0, 1000)
-    sensor = 25 + np.random.normal(0, 0.5, 1000)
-    sensor[700:] += np.linspace(0, 5, 300)
-    df = pd.DataFrame({"time": time, "sensor": sensor})
-    return df
+    # LSTM Autoencoder
+    model = Sequential([
+        LSTM(64, activation='relu', input_shape=(window_size, 1), return_sequences=False),
+        RepeatVector(window_size),
+        LSTM(64, activation='relu', return_sequences=True),
+        TimeDistributed(Dense(1))
+    ])
 
-df = load_sensor_data()
+    model.compile(optimizer='adam', loss='mse')
+    model.fit(X_train, X_train, epochs=10, batch_size=32, verbose=0)
 
-if model_option == "Isolation Forest":
-    st.subheader("🔍 Anomaly Detection using Isolation Forest")
-    model = IsolationForest(contamination=0.05, random_state=42)
-    df['anomaly'] = model.fit_predict(df[['sensor']])
-    df['anomaly'] = df['anomaly'].apply(lambda x: 1 if x == -1 else 0)
+    X_pred = model.predict(X_test, verbose=0)
+    mse = np.mean(np.power(sequences - X_pred, 2), axis=(1, 2))
 
-    fig, ax = plt.subplots(figsize=(12, 4))
-    ax.plot(df['time'], df['sensor'], label='Sensor Data')
-    ax.scatter(df[df['anomaly'] == 1]['time'], df[df['anomaly'] == 1]['sensor'], color='red', label='Anomalies')
-    ax.set_title('Sensor Data with Detected Anomalies (Isolation Forest)')
-    ax.set_xlabel('Time')
-    ax.set_ylabel('Sensor Reading')
-    ax.legend()
-    st.pyplot(fig)
+    threshold = np.percentile(mse, 95)
+    anomalies = mse > threshold
 
-elif model_option == "LSTM Autoencoder":
-    st.subheader("🤖 Anomaly Detection using LSTM Autoencoder")
-    df_lstm, threshold = detect_anomalies_lstm()
+    df = df.iloc[window_size:].copy()
+    df["reconstruction_error"] = mse
+    df["anomaly_lstm"] = anomalies.astype(int)
 
-    fig2, ax2 = plt.subplots(figsize=(12, 4))
-    ax2.plot(df_lstm['time'], df_lstm['sensor'], label='Sensor Data')
-    ax2.scatter(df_lstm[df_lstm['anomaly_lstm'] == 1]['time'],
-                df_lstm[df_lstm['anomaly_lstm'] == 1]['sensor'],
-                color='red', label='Anomalies')
-    ax2.set_title(f'Sensor Data with Detected Anomalies (LSTM Autoencoder)\nThreshold = {threshold:.4f}')
-    ax2.set_xlabel('Time')
-    ax2.set_ylabel('Sensor Reading')
-    ax2.legend()
-    st.pyplot(fig2)
-
-st.markdown("---")
-st.dataframe(df.head(20))
+    return df, threshold
