@@ -32,6 +32,8 @@ Edit
   <img src="https://github.com/yourusername/sensor-fault-detection/assets/preview.png" width="70%" />
 </p>
 
+![Dashboard](image.png)
+
 ## 🧪 How to Run
 
 1. Clone the repo
