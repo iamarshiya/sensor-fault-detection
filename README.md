@@ -36,7 +36,7 @@ Edit
 
 1. Clone the repo
    ```bash
-   git clone https://github.com/yourusername/sensor-fault-detection.git
+   git clone https://github.com/iamarshiya/sensor-fault-detection.git
    cd sensor-fault-detection
    Create a virtual environment
    ```
