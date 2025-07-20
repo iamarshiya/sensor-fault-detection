@@ -2,58 +2,66 @@ import os
 import fastf1
 from fastf1 import plotting
 import pandas as pd
-import time
 
-# Setup cache directory
+# Enable FastF1 cache
 cache_dir = './cache'
 os.makedirs(cache_dir, exist_ok=True)
 fastf1.Cache.enable_cache(cache_dir)
-plotting.setup_mpl()  # Use team colors in matplotlib plots
+plotting.setup_mpl()  # Enable team colors in plots
 
 def get_available_grands_prix(year):
-    """Return list of all races (EventName) for the given year."""
-    schedule = fastf1.get_event_schedule(year)
-    return schedule['EventName'].tolist()
+    try:
+        schedule = fastf1.get_event_schedule(year)
+        return schedule['EventName'].tolist()
+    except Exception:
+        return []
 
 def get_driver_codes(year, gp, session_type):
-    """Return sorted list of all drivers for the given session."""
-    session = fastf1.get_session(year, gp, session_type)
-    session.load()
-    return sorted(session.laps['Driver'].unique())
+    try:
+        session = fastf1.get_session(year, gp, session_type)
+        session.load()
+        return sorted(session.laps['Driver'].unique())
+    except Exception:
+        return []
 
 def get_driver_telemetry(year, gp, session_type, driver_code):
-    """
-    Get telemetry and position data for the fastest lap of a driver.
-    Returns:
-        df: DataFrame with Time, Throttle, Brake, Speed, Gear, Distance
-        pos: Position data (X, Y)
-        session: Original session object (in case more is needed)
-    """
-    session = fastf1.get_session(year, gp, session_type)
-    session.load()
+    try:
+        session = fastf1.get_session(year, gp, session_type)
+        session.load()
 
-    # Pick fastest lap for selected driver
-    driver_lap = session.laps.pick_driver(driver_code).pick_fastest()
-    tel = driver_lap.get_car_data().add_distance()
-    pos = driver_lap.get_pos_data()
+        driver_lap = session.laps.pick_driver(driver_code).pick_fastest()
+        if driver_lap is None:
+            return None, None, driver_code
 
-    # Build DataFrame
-    df = pd.DataFrame({
-        'Time': tel['Time'].dt.total_seconds(),
-        'Throttle': tel['Throttle'],
-        'Brake': tel['Brake'],
-        'Speed': tel['Speed'],
-        'nGear': tel['nGear'],
-        'Distance': tel['Distance']
-    })
+        tel = driver_lap.get_car_data().add_distance()
+        pos = driver_lap.get_pos_data()
 
-    return df, pos, session
+        df = pd.DataFrame({
+            'Time': tel['Time'].dt.total_seconds(),
+            'Throttle': tel['Throttle'],
+            'Brake': tel['Brake'],
+            'Speed': tel['Speed'],
+            'nGear': tel['nGear'],
+            'Distance': tel['Distance']
+        })
 
-def simulate_telemetry_stream(df, chunk_size=10):
-    """
-    Simulates live streaming of telemetry data by yielding chunks.
-    (You’ve removed simulation from the dashboard, but kept for testing.)
-    """
-    for i in range(chunk_size, len(df) + chunk_size, chunk_size):
-        yield df.iloc[:i]
-        time.sleep(0.1)
+        # Placeholder telemetry values (FastF1 doesn't always have these fields)
+        df['TyreSurfaceTemperature'] = 90 + 10 * pd.np.sin(df['Time'] / 10)
+        df['TyrePressure'] = 22 + 0.5 * pd.np.cos(df['Time'] / 15)
+        df['ERSDeployMode'] = 2 + 1 * pd.np.sin(df['Time'] / 8)
+
+        return df, pos, driver_code
+    except Exception as e:
+        return None, None, driver_code
+
+def get_pit_stops(year, gp, session_type, driver_code):
+    try:
+        session = fastf1.get_session(year, gp, session_type)
+        session.load()
+        laps = session.laps.pick_driver(driver_code)
+        pit_stops = laps[laps['PitInTime'].notnull() & laps['PitOutTime'].notnull()].copy()
+
+        pit_stops['Duration'] = (pit_stops['PitOutTime'] - pit_stops['PitInTime']).dt.total_seconds()
+        return pit_stops[['LapNumber', 'PitInTime', 'PitOutTime', 'Duration']]
+    except Exception:
+        return pd.DataFrame()
