@@ -28,22 +28,6 @@ streamlit run dashboard.py
 
 📷 Screenshots
 
-Add the following screenshots in a /screenshots folder and embed them in the README:
-
-Main dashboard landing page (with driver selection).
-
-Telemetry plots (speed vs time, throttle & brake overlay).
-
-Track map visualization with lap replay.
-
-Anomaly detection view (red points flagged on speed plot).
-
-Multi-driver comparison.
-
-Pit stop detection (before/after tire pressure/temp).
-
-Example embedding:
-
 ![Dashboard Landing](screenshots/dashboard_home.png)  
 ![Telemetry Plot](screenshots/telemetry_plot.png)  
 ![Anomaly Detection](screenshots/anomaly_detection.png)  
