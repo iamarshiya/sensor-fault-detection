@@ -1,88 +1,80 @@
-# 🔧 AI-Based Fault Detection in Sensors (Time-Series Anomaly Detection)
+🏎️ Sensor Fault Detection with F1 Telemetry Dashboard
 
-A deep learning + machine learning hybrid project for predictive maintenance in industrial and automotive sensor systems. Built with **LSTM Autoencoder**, **Isolation Forest**, and **Streamlit**.
+This project combines machine learning (LSTM Autoencoder) with real Formula 1 telemetry data to perform anomaly detection on sensors. It provides an interactive dashboard built with Streamlit that allows engineers to analyze telemetry, detect faults, and visualize anomalies in real time. The dashboard enables visualization of speed, throttle, brake, gear, tire pressure, and ERS usage, along with multi-driver comparisons, lap-by-lap replay, and track map visualization. The LSTM Autoencoder highlights anomalies in sensor readings (such as sudden drops or spikes), offering meaningful engineering insights.
 
-## 🚀 Features
+🚀 Getting Started
 
-- ⚡ Time-series anomaly detection using:
-  - 🧠 LSTM Autoencoder (deep learning)
-  - 🌲 Isolation Forest (unsupervised ML)
-- 📊 Streamlit Dashboard for visual exploration
-- 📁 CSV file output with anomaly labels
-- 🔄 Model selection via sidebar
-- 📌 Modular Python scripts and clean architecture
+Clone the repository:
 
-## 📂 Project Structure
+git clone https://github.com/iamarshiya/sensor-fault-detection.git
+cd sensor-fault-detection
 
-sensor-fault-detection/
-├── main.py # Isolation Forest baseline
-├── lstm_autoencoder.py # Deep Learning model
-├── dashboard.py # Streamlit interactive app
-├── sensor_lstm_output.csv # LSTM results (auto-generated)
-├── requirements.txt
-└── README.md
 
-bash
-Copy
-Edit
+Create a virtual environment and activate it:
 
-## 📈 Dashboard Preview
+python -m venv venv  
+.\venv\Scripts\activate   # On Windows  
+source venv/bin/activate  # On Mac/Linux  
 
-<p align="center">
-  <img src="https://github.com/yourusername/sensor-fault-detection/assets/preview.png" width="70%" />
-</p>
 
-![Dashboard](image.png)
+Install dependencies:
 
-## 🧪 How to Run
-
-1. Clone the repo
-   ```bash
-   git clone https://github.com/iamarshiya/sensor-fault-detection.git
-   cd sensor-fault-detection
-   Create a virtual environment
-   ```
-
-bash
-Copy
-Edit
-python -m venv venv
-.\venv\Scripts\activate
-Install dependencies
-
-bash
-Copy
-Edit
 pip install -r requirements.txt
-Run the Streamlit app
 
-bash
-Copy
-Edit
+
+Run the dashboard:
+
 streamlit run dashboard.py
-🛠️ Tech Stack
-Python 3.10
 
-TensorFlow / Keras
+📷 Screenshots
 
-Scikit-learn
+Add the following screenshots in a /screenshots folder and embed them in the README:
 
-Pandas, NumPy, Matplotlib, Seaborn
+Main dashboard landing page (with driver selection).
 
-Streamlit
+Telemetry plots (speed vs time, throttle & brake overlay).
 
-🌐 Live Demo
-Click to Launch App
+Track map visualization with lap replay.
 
-📌 Use Case
-This project simulates predictive maintenance by detecting unusual patterns (faults or drifts) in sensor signals. Useful in:
+Anomaly detection view (red points flagged on speed plot).
 
-Automotive telemetry (e.g., McLaren F1 sensor integrity)
+Multi-driver comparison.
 
-Industrial IoT
+Pit stop detection (before/after tire pressure/temp).
 
-Smart manufacturing
+Example embedding:
 
-📇 Author
-Arshiya A.
-B.Tech Electronics
+![Dashboard Landing](screenshots/dashboard_home.png)  
+![Telemetry Plot](screenshots/telemetry_plot.png)  
+![Anomaly Detection](screenshots/anomaly_detection.png)  
+![Multi Driver Comparison](screenshots/multi_driver_comparison.png)  
+![Pit Stop Detection](screenshots/pit_stop_detection.png)  
+ 
+
+📂 Project Structure
+sensor-fault-detection/
+│-- dashboard.py
+│-- f1_data_extractor.py
+│-- lstm_autoencoder.py
+│-- requirements.txt
+│-- data/
+│-- screenshots/
+    │-- dashboard_home.png
+    │-- telemetry_plot.png
+    │-- track_map.png
+    │-- anomaly_detection.png
+    │-- multi_driver_comparison.png
+    │-- pit_stop_detection.png
+ 
+
+🎯 Future Improvements
+
+Add support for ERS deployment and DRS zones.
+
+Deploy dashboard on Streamlit Cloud or HuggingFace Spaces.
+
+Integrate with real-time telemetry streaming.
+
+👩‍💻 Author
+
+Your Name – Aspiring Electronics & Telecommunication Engineer | AI + Motorsport Enthusiast

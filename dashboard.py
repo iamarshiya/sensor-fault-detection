@@ -2,6 +2,8 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
+
+
 from PIL import Image
 from driver_data import driver_info  # Import from your file
 
@@ -50,9 +52,17 @@ elif driver_options:
 def display_driver_logo(code):
     """
     Display logo and driver full name + number using driver code from external file.
+    Select logo based on year.
     """
     code = code.upper()
-    logo_path = os.path.join("logos", f"{code}.png")
+
+    # Determine logo file name based on year and team
+    if year < 2025 and code == "HAM":
+        logo_filename = f"{code}_mer.png"
+    else:
+        logo_filename = f"{code}.png"
+
+    logo_path = os.path.join("logos", logo_filename)
     col1, col2 = st.columns([1, 3])
 
     with col1:
@@ -60,7 +70,7 @@ def display_driver_logo(code):
             img = Image.open(logo_path)
             st.image(img, width=100)
         else:
-            st.warning(f"⚠️ Logo for '{code}' not found.")
+            st.warning(f"\u26a0\ufe0f Logo for '{code}' not found.")
 
     with col2:
         if code in driver_info:
@@ -68,8 +78,7 @@ def display_driver_logo(code):
             number = driver_info[code]["number"]
             st.markdown(f"### #{number} {name}")
         else:
-            st.warning(f"⚠️ Info for '{code}' not found.")
-
+            st.warning(f"\u26a0\ufe0f Info for '{code}' not found.")
 # === Load Telemetry Button ===
 if st.sidebar.button("Load Telemetry"):
     try:
