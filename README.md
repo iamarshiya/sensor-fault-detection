@@ -40,8 +40,24 @@ pip install -r requirements.txt
 **Run the dashboard:**
 ```
 streamlit run dashboard.py
-```
-## 📷 Screenshots
+
+📷 Screenshots
+
+Add the following screenshots in a /screenshots folder and embed them in the README:
+
+Main dashboard landing page (with driver selection).
+
+Telemetry plots (speed vs time, throttle & brake overlay).
+
+Track map visualization with lap replay.
+
+Anomaly detection view (red points flagged on speed plot).
+
+Multi-driver comparison.
+
+Pit stop detection (before/after tire pressure/temp).
+
+Example embedding:
 
 ![Dashboard Landing](screenshots/dashboard_home.png)  
 ![Telemetry Plot](screenshots/telemetry_plot.png)  
@@ -75,10 +91,6 @@ Deploy dashboard on Streamlit Cloud or HuggingFace Spaces.
 
 Integrate with real-time telemetry streaming.
 
-## 👩‍💻 Author
+👩‍💻 Author
 
-Arshiya Attar
-
-**GitHub**: [Arshiya Attar](https://github.com/iamarshiya)
-
-**LinkedIn**:[Arshiya Attar](https://www.linkedin.com/in/arshiya-attar-91b4ab2b5/)
+Your Name – Aspiring Electronics & Telecommunication Engineer | AI + Motorsport Enthusiast
