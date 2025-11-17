@@ -1,48 +1,47 @@
-🏎️ Sensor Fault Detection with F1 Telemetry Dashboard
+### 🏎️ Sensor Fault Detection with F1 Telemetry Dashboard
+
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 This project combines machine learning (LSTM Autoencoder) with real Formula 1 telemetry data to perform anomaly detection on sensors. It provides an interactive dashboard built with Streamlit that allows engineers to analyze telemetry, detect faults, and visualize anomalies in real time. The dashboard enables visualization of speed, throttle, brake, gear, tire pressure, and ERS usage, along with multi-driver comparisons, lap-by-lap replay, and track map visualization. The LSTM Autoencoder highlights anomalies in sensor readings (such as sudden drops or spikes), offering meaningful engineering insights.
 
-🚀 Getting Started
+## ✨ Key Features
 
-Clone the repository:
+* **Real-time Visualization:** Track speed, throttle, brake, gear, tire pressure, and ERS usage.
+* **Anomaly Detection:** Uses LSTM Autoencoders to automatically flag sensor faults.
+* **Multi-Driver Comparison:** Overlay telemetry from different drivers for comparative analysis.
+* **Track Map:** Visual representation of the car's position on the circuit.
+* **Lap-by-Lap Replay:** Detailed breakdown of performance per lap.
 
+---
+
+## 🚀 Getting Started
+
+**Clone the repository:**
+```bash
 git clone https://github.com/iamarshiya/sensor-fault-detection.git
 cd sensor-fault-detection
+```
 
-
-Create a virtual environment and activate it:
-
+**Create a virtual environment and activate it:**
+```
 python -m venv venv  
 .\venv\Scripts\activate   # On Windows  
 source venv/bin/activate  # On Mac/Linux  
+```
 
-
-Install dependencies:
-
+**Install dependencies:**
+```
 pip install -r requirements.txt
+```
 
-
-Run the dashboard:
-
+**Run the dashboard:**
+```
 streamlit run dashboard.py
-
-📷 Screenshots
-
-Add the following screenshots in a /screenshots folder and embed them in the README:
-
-Main dashboard landing page (with driver selection).
-
-Telemetry plots (speed vs time, throttle & brake overlay).
-
-Track map visualization with lap replay.
-
-Anomaly detection view (red points flagged on speed plot).
-
-Multi-driver comparison.
-
-Pit stop detection (before/after tire pressure/temp).
-
-Example embedding:
+```
+## 📷 Screenshots
 
 ![Dashboard Landing](screenshots/dashboard_home.png)  
 ![Telemetry Plot](screenshots/telemetry_plot.png)  
@@ -51,7 +50,8 @@ Example embedding:
 ![Pit Stop Detection](screenshots/pit_stop_detection.png)  
  
 
-📂 Project Structure
+## 📂 Project Structure
+```
 sensor-fault-detection/
 │-- dashboard.py
 │-- f1_data_extractor.py
@@ -66,8 +66,8 @@ sensor-fault-detection/
     │-- multi_driver_comparison.png
     │-- pit_stop_detection.png
  
-
-🎯 Future Improvements
+```
+## 🎯 Future Improvements
 
 Add support for ERS deployment and DRS zones.
 
@@ -75,6 +75,10 @@ Deploy dashboard on Streamlit Cloud or HuggingFace Spaces.
 
 Integrate with real-time telemetry streaming.
 
-👩‍💻 Author
+## 👩‍💻 Author
 
-Your Name – Aspiring Electronics & Telecommunication Engineer | AI + Motorsport Enthusiast
+Arshiya Attar
+
+**GitHub**: [Arshiya Attar](https://github.com/iamarshiya)
+
+**LinkedIn**:[Arshiya Attar](https://www.linkedin.com/in/arshiya-attar-91b4ab2b5/)
